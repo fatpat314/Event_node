@@ -159,7 +159,7 @@ def event_diagnosis():
     receive_vertex = 'Patient'
     send_edge_name = 'event_disease'
     receive_edge_name = 'event_patient'
-    action = 'Diagnosis'
+    action = 'Diagnosis Patient'
 
     CNM_url_diagnosis = f'{CNM_url}/add_event'
     data = {
@@ -177,8 +177,17 @@ def event_diagnosis():
     receive_vertex = 'Care_Provider'
     send_edge_name = 'event_disease'
     receive_edge_name = 'event_care_provider'
+    action = 'Diagnosis Care Provider'
 
-    data = {'vertex1_id_list': disease_id, 'vertex2_id_list': provider_id, 'send_vertex': send_vertex, 'receive_vertex': receive_vertex, 'send_edge_name': send_edge_name, 'receive_edge_name': receive_edge_name}
+    data = {
+        'vertex1_id_list': disease_id, 
+        'vertex2_id_list': provider_id, 
+        'send_vertex': send_vertex, 
+        'receive_vertex': receive_vertex, 
+        'send_edge_name': send_edge_name, 
+        'receive_edge_name': receive_edge_name,
+        'action': action
+        }
     requests.post(CNM_url_diagnosis, json=data)
 
     # Disease to patient
@@ -195,7 +204,7 @@ def event_risk():
     receive_vertex = 'Risk_Factors'
     send_edge_name = 'event_patient'
     receive_edge_name = 'event_risk'
-    action = 'Risk Factors'
+    action = 'Risk Factors Patient'
 
     CNM_url_event = f'{CNM_url}/add_event'
     data = {
@@ -215,14 +224,14 @@ def event_risk():
 def event_risk_disease():
     risk_factors_id_list = request.json.get('risk_factors_id')
     disease_id = [request.json.get('disease_id')]
-    print("Risk_list: ", risk_factors_id_list)
-    print("D ID: ", disease_id)
+    # print("Risk_list: ", risk_factors_id_list)
+    # print("D ID: ", disease_id)
 
     send_vertex = 'Risk_Factors'
     receive_vertex = 'Disease'
     send_edge_name = 'event_risk'
     receive_edge_name = 'event_disease'
-    action = 'Risk Factors'
+    action = 'Risk Factors Disease'
 
     CNM_url_event = f'{CNM_url}/add_event'
     data = {
@@ -237,6 +246,30 @@ def event_risk_disease():
     requests.post(CNM_url_event, json=data)
 
     return('hi')
+
+@app.route('/event-key-symptoms', methods = ['GET', 'POST'])
+def event_key_symptoms():
+    symptoms_id_list = request.json.get('symptoms_id')
+    disease_id = [request.json.get('diseases_id')]
+
+    send_vertex = 'Symptom'
+    receive_vertex = 'Disease'
+    send_edge_name = 'event_symptom'
+    receive_edge_name = 'event_disease'
+    action = 'Key Symptoms'
+
+    CNM_url_event = f'{CNM_url}/add_event'
+    data = {
+            'vertex1_id_list': symptoms_id_list, 
+            'vertex2_id_list': disease_id, 
+            'send_vertex': send_vertex, 
+            'receive_vertex': receive_vertex, 
+            'send_edge_name': send_edge_name, 
+            'receive_edge_name': receive_edge_name,
+            'action': action
+        }
+    requests.post(CNM_url_event, json=data)
+    return("hi")
 
 
 if __name__ == '__main__':
