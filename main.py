@@ -3,14 +3,16 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, g
 from flask_jwt_extended import JWTManager, jwt_required, \
                                create_access_token, get_jwt_identity
-import requests, names, random, threading, uuid, json
+import requests, random, threading, uuid, json
 import argparse
 import ast
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY # change this to a random string in production
-CNM_url = "http://localhost:6000"
-KAN_url = "http://localhost:8050"
+CNM_url = "http://localhost:8010"
+# CNM_url = "https://cognitive-network-manager-rdwl5upzra-uw.a.run.app"
+# KAN_url = "https://kan-api-rdwl5upzra-uc.a.run.app"
+KAN_url = "http://localhost:8050/"
 jwt = JWTManager(app)
 load_dotenv()
 
